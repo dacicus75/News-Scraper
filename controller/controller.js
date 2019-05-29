@@ -21,7 +21,7 @@ router.get('/', function(req, res) {
 // A GET request to scrape the npr website
 router.get('/scrape', function(req, res) {
     // First, we grab the body of the html with request
-    request('https://www.npr.org/sections/news/', function(error, response, html) {
+    request('https://www.npr.org', function(error, response, html) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(html);
         var titlesArray = [];
@@ -70,7 +70,7 @@ router.get('/scrape', function(req, res) {
           }
           // Log that scrape is working, just the content was missing parts
           else{
-            console.log('Not saved to DB, missing data')
+            console.log('Not saved to database, missing data')
           }
         });
         // after scrape, redirects to index
@@ -126,7 +126,7 @@ router.get('/readArticle/:id', function(req, res){
 
     // //find the article at the id
     Article.findOne({ _id: articleId })
-      .populate('comment')
+      .populate('note')
       .exec(function(err, doc){
       if(err){
         console.log('Error: ' + err);
@@ -139,7 +139,7 @@ router.get('/readArticle/:id', function(req, res){
 
           $('.l-col__main').each(function(i, element){
             hbsObj.body = $(this).children('.c-entry-content').children('p').text();
-            //send article body and comments to article.handlbars through hbObj
+            //send article body and notes to article.handlbars through hbObj
             res.render('article', hbsObj);
             //prevents loop through so it doesn't return an empty hbsObj.body
             return false;
