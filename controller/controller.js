@@ -9,7 +9,7 @@ var cheerio = require('cheerio');
 
 //Require models
 var note = require('../models/note.js');
-var Article = require('../models/Article.js');
+var Article = require('../models/article.js');
 
 //index
 router.get('/', function(req, res) {
@@ -26,7 +26,7 @@ router.get('/scrape', function(req, res) {
         var $ = cheerio.load(html);
         var titlesArray = [];
         // Now, we grab every article
-        $('.c-entry-box--compact__title').each(function(i, element) {
+        $('.story-text').each(function(i, element) {
             // Save an empty result object
             var result = {};
 
